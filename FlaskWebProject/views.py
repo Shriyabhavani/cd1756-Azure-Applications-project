@@ -67,10 +67,10 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         if user is None or not user.check_password(form.password.data):
-            app.logger.warning("Invalid login attempt", form.username.data)
+            app.logger.warning("Invalid login attempt for user: %s", form.username.data)
             flash('Invalid username or password')
             return redirect(url_for('login'))    
-        app.logger.info("admin logged in successfully")
+        app.logger.info("%s admin logged in successfully")
         
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -102,6 +102,7 @@ def authorized():
         # Here, we'll use the admin username for anyone who is authenticated by MS
         user = User.query.filter_by(username="admin").first()
         login_user(user)
+        app.logger.info("admin logged in successfully using Microsoft authentication")
         _save_cache(cache)
     return redirect(url_for('home'))
    
