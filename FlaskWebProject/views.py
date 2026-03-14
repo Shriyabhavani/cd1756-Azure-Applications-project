@@ -67,7 +67,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         if user is None or not user.check_password(form.password.data):
-            app.logger.warning("Invalid login attempt for user: %s", form.username.data)
+            app.logger.warning("Invalid login attempt", form.username.data)
             flash('Invalid username or password')
             return redirect(url_for('login'))    
         app.logger.info("admin logged in successfully")
