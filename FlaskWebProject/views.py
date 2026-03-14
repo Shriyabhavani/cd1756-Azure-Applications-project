@@ -65,10 +65,13 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+
         if user is None or not user.check_password(form.password.data):
             app.logger.warning("Invalid login attempt for user: %s", form.username.data)
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('login'))    
+        app.logger.info("admin logged in successfully")
+        
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
