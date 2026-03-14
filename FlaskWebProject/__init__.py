@@ -10,6 +10,14 @@ from flask_session import Session
 
 app = Flask(__name__)
 app.config.from_object(Config)
+import logging
+
+if not app.debug:
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    app.logger.addHandler(stream_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info("CMS application startup")
 # TODO: Add any logging levels and handlers with app.logger
 Session(app)
 db = SQLAlchemy(app)
